@@ -277,12 +277,13 @@ Each model was wrapped in a pipeline to ensure consistent preprocessing and fair
 
 ## Model Performance Summary
 
-| Model               | Accuracy | ROC–AUC   |
-| ------------------- | -------- | --------- |
-| Logistic Regression | 0.942    | 0.736     |
-| Random Forest       | 0.942    | 0.745     |
-| Gradient Boosting   | 0.942    | 0.742     |
-| XGBoost Classifier  | 0.942    | **0.749** |
+| Model               | Accuracy | Precision | Recall | F1 Score | ROC–AUC   |
+| ------------------- | -------- | --------- | ------ | -------- | --------- |
+| Logistic Regression | 0.942    | 0.922     | 0.942  | 0.915    | 0.736     |
+| Random Forest       | 0.942    | 0.887     | 0.942  | 0.914    | 0.745     |
+| Gradient Boosting   | 0.942    | 0.909     | 0.942  | 0.914    | 0.742     |
+| XGBoost Classifier  | 0.942    | 0.945     | 0.942  | 0.914    | **0.749** |
+
 
 Although accuracy was similar across models, **ROC–AUC highlighted meaningful differences** in ranking high-risk customers.
 

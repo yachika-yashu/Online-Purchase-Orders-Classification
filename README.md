@@ -194,13 +194,6 @@ This captures customer behavior patterns related to purchase timing.
 
 ---
 
-Perfect — below is a **polished, drop-in README section** that you can **copy-paste directly** into your `README.md`.
-It is written to *merge cleanly* with the earlier sections and does **not** assume the reader has seen your code.
-
-Nothing extra, nothing missing.
-
----
-
 ## Persisting the Cleaned Dataset
 
 After completing data cleaning and feature engineering, the processed dataset was saved in **Parquet format**.

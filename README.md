@@ -200,3 +200,170 @@ This captures customer behavior patterns related to purchase timing.
 
 ---
 
+Perfect — below is a **polished, drop-in README section** that you can **copy-paste directly** into your `README.md`.
+It is written to *merge cleanly* with the earlier sections and does **not** assume the reader has seen your code.
+
+Nothing extra, nothing missing.
+
+---
+
+## Persisting the Cleaned Dataset
+
+After completing data cleaning and feature engineering, the processed dataset was saved in **Parquet format**.
+
+**Why Parquet instead of CSV?**
+
+* Preserves original **data types** (numeric, categorical, datetime)
+* Prevents implicit type conversion when reloading data for modeling
+* Faster read/write performance and smaller file size
+* Ensures consistency between preprocessing and model training stages
+
+This step was essential to guarantee that categorical and numerical features were restored exactly as intended during the modeling phase.
+
+---
+
+## Model Training Strategy
+
+### Train–Test Split
+
+The dataset was split into training and testing sets using a **stratified split** to maintain the original class distribution:
+
+* **Training set:** 80%
+* **Test set:** 20%
+* Stratification applied on the target variable (`CLASS`)
+* Fixed random seed for reproducibility
+
+This ensured both high-risk and low-risk orders were proportionally represented.
+
+---
+
+## Feature Preprocessing Pipeline
+
+A **pipeline-based preprocessing approach** was used to avoid data leakage and ensure consistent transformations during cross-validation and inference.
+
+### Numerical Features
+
+* Missing values imputed using **mean or median** (tuned via GridSearch)
+* Features standardized using **StandardScaler**
+
+### Categorical Features
+
+* Missing values imputed using the **most frequent value**
+* Encoded using **One-Hot Encoding**
+* Unknown categories safely handled during inference
+
+A **ColumnTransformer** was used to apply transformations selectively to numerical and categorical features.
+
+---
+
+## Models Evaluated
+
+The following classification models were evaluated using a unified preprocessing + modeling pipeline:
+
+* Logistic Regression
+* Random Forest
+* Gradient Boosting
+* XGBoost Classifier
+
+Each model was wrapped in a pipeline to ensure consistent preprocessing and fair comparison.
+
+---
+
+## Hyperparameter Tuning
+
+* **GridSearchCV** with 3-fold cross-validation
+* Parallel execution using all available CPU cores
+* Hyperparameters tuned for both:
+
+  * Model complexity
+  * Numerical imputation strategy
+
+### Primary Evaluation Metric
+
+**ROC–AUC** was used as the primary metric because:
+
+* It measures how well the model ranks customers by risk
+* It is independent of a fixed classification threshold
+* It is well-suited for credit and fraud-risk prediction problems
+
+---
+
+## Model Performance Summary
+
+| Model               | Accuracy | ROC–AUC   |
+| ------------------- | -------- | --------- |
+| Logistic Regression | 0.942    | 0.736     |
+| Random Forest       | 0.942    | 0.745     |
+| Gradient Boosting   | 0.942    | 0.742     |
+| XGBoost Classifier  | 0.942    | **0.749** |
+
+Although accuracy was similar across models, **ROC–AUC highlighted meaningful differences** in ranking high-risk customers.
+
+---
+
+## Best Model Selection
+
+The **XGBoost Classifier** achieved the highest ROC–AUC score and was selected as the final model:
+
+* Strong performance on non-linear feature interactions
+* Robust handling of mixed feature types
+* Best overall risk-ranking capability
+
+---
+
+## Model Persistence
+
+The final trained model, including preprocessing steps, was saved using `joblib`:
+
+```
+best_classification_model.pkl
+```
+
+Saving the full pipeline ensures:
+
+* No train–inference mismatch
+* Reproducibility
+* Readiness for deployment or batch scoring
+
+---
+
+### Final Note
+
+This project demonstrates an **end-to-end machine learning workflow**, from domain-aware data cleaning and feature engineering to robust model selection and evaluation, with a strong emphasis on reproducibility and real-world risk modeling.
+
+---
+
+Here’s a **short, clean, README-ready version** you can paste directly:
+
+---
+
+## Reproducibility
+
+The project is structured using **two separate notebooks** to ensure reproducibility and a clear ML workflow.
+
+* **Notebook 1 – Data Preprocessing & Feature Engineering**
+
+  * Cleans raw data and performs feature extraction
+  * Saves the processed dataset in **Parquet format** to preserve data types
+  * Output stored in:
+
+    ```
+    data/cleaned/cleaned_data.csv
+    ```
+
+* **Notebook 2 – Model Training & Evaluation**
+
+  * Loads the cleaned Parquet file
+  * Performs train–test split, preprocessing pipelines, model training, and evaluation
+  * Saves the best model (including preprocessing) as:
+
+    ```
+    best_classification_model.pkl
+    ```
+
+This separation prevents data leakage, ensures consistent feature definitions, and allows the full pipeline to be reproduced end-to-end.
+
+---
+
+
+
